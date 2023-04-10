@@ -1,0 +1,13 @@
+.slider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  .slide {
+    position: relative;
+    width: 80%;
+    height: 80%;
+  }
+  

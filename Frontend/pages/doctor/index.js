@@ -1,17 +1,12 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from '@/styles/Home.module.css'
+import MyLayout from "./component/layout";
+import Header from "./component/header";
 
-const inter = Inter({ subsets: ['latin'] })
-
-export default function Home() {
+export default function home() {
+  
   return (
     <>
-      <Head>
-        <title>citizen Page</title>
-      </Head>
-      hello
+      <MyLayout title="Home" />
+        <h1>Welcome to Doctor's Dashboard Page</h1>
     </>
-  )
+  );
 }
