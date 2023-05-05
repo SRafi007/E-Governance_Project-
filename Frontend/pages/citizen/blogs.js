@@ -1,5 +1,5 @@
 import styles from '../../styles/citizen/blogs.module.css'
-import Navbar from '../citizen/components/NavbarCustom'
+import Navbar from './components/NavbarCustom'
 import Image from 'next/image'
 //import img1 from '../../public/image/citizen/cover1'
 const  blogs=()=>{

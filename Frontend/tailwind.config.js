@@ -3,7 +3,8 @@ module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
-    "./pages/citizen/components/**/*.{js,ts,jsx,tsx}"
+    "./pages/citizen/components/**/*.{js,ts,jsx,tsx}",
+    "./pages/citizen/**/*.{js,ts,jsx,tsx}"
   ],
   theme: {
     extend: {},

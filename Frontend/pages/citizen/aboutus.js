@@ -1,6 +1,5 @@
 import React from 'react';
-import  '../../styles/citizen/aboutus.module.css';
-import Navbar from '../citizen/components/NavbarCustom'
+import Navbar from './components/CustomNavbar'
 
 const AboutUs = () => {
   return (
