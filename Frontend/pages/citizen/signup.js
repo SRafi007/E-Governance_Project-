@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import styles from '../../styles/citizen/Signup.module.css';
 
 const Signup = () => {
   const router = useRouter();
@@ -31,12 +30,31 @@ const Signup = () => {
     router.push("/citizen/signin")
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    router.push({
-      pathname:'signup',
-      query:{name:name, nid:nid, phoneNumber:phoneNumber,email:email}
-    });
+
+    const info={name:name, nid:nid, phoneNumber:phoneNumber,email:email}
+    try {
+      const response = await axios.put('http://localhost:3000/citizen/signup', info)
+      const data=await response.data;
+
+      if(data==1){
+        router.push('/citizen/signin');
+        console.log(data)
+      }
+      if(data==0){
+        
+        console.log("this Account already exist")
+      }
+
+    } catch (error) {
+        console.log("error22: "+error.message)
+      setError("invalid login")
+    }
+    // router.push({
+    //   pathname:'signup',
+    //   query:{name:name, nid:nid, phoneNumber:phoneNumber,email:email}
+    // });
   };
 
   return (
@@ -112,17 +130,17 @@ const Signup = () => {
   );
 };
 
-export default Signup;
-export async function getServerSideProps({query}){
-const info={name:query.name,nid:query.nid,phoneNumber:query.phoneNumber,email:query.email}
-console.log(query);
-try{
-  const res=await axios.put('http://localhost:3000/citizen/signup',info);
-  const data=await res.data;
-  console.log(res.data);
-  return 0;
-}
-catch(error){
-  return {props:{data:{status:"error"}}}
-}
-}
+ export default Signup;
+// export async function getServerSideProps({query}){
+// const info={name:query.name,nid:query.nid,phoneNumber:query.phoneNumber,email:query.email}
+// console.log(query);
+// try{
+//   const res=await axios.put('http://localhost:3000/citizen/signup',info);
+//   const data=await res.data;
+//   console.log(res.data);
+//   return 0;
+// }
+// catch(error){
+//   return {props:{data:{status:"error"}}}
+// }
+// }

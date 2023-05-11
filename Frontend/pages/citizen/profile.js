@@ -9,7 +9,6 @@ import SessionCheck from "./components/sessionCheck";
 export default function profile({data}){
     const [id, setId]=useState("");
 
-
   
     
     if(data[0].bio==null){
@@ -50,6 +49,28 @@ export default function profile({data}){
           pathname: '/citizen/printCard',
           query:{id:myid}
         });
+      };
+      const  historyRoute=()=>{
+        router.push({
+          pathname: '/citizen/history',
+          query:{id:myid}
+        });
+      };
+
+      const  messageRoute=()=>{
+        router.push({
+          pathname: '/citizen/message',
+          query:{add:'citizen2@gmail.com'}
+        });
+      };
+
+      const bioRoute=()=>{
+        console.log('clicked')
+        router.push('/citizen/bio')
+        // router.push({
+        //     pathname: '/citizen/bio',
+        //     query:{id:myid}
+        //   });
       }
 
 
@@ -70,10 +91,10 @@ export default function profile({data}){
                     <svg fill="currentColor" viewBox="0 0 20 20" class="w-6 h-6">
                         <path x-show="!open" fillRule="evenodd"
                             d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                            clip-rule="evenodd"></path>
+                            clipRule="evenodd"></path>
                         <path x-show="open" fillRule="evenodd"
                             d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"></path>
+                            clipRule="evenodd"></path>
                     </svg>
                 </button>
             </div>
@@ -85,12 +106,12 @@ export default function profile({data}){
                         My Health 
 
                     </button>
-                    <button onClick={() => window.location.href = '/citizen/history/?id=2'}
+                    <button onClick={historyRoute}
                         class="flex flex-row text-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold rounded-tr-lg rounded-bl-lg  hover:bg-green-800 md:w-auto md:inline md:mt-0 md:ml-4 bg-green-500 hover:bg-green-200 focus:bg-green-800 focus:outline-none focus:shadow-outline">
                         My History
 
                     </button>
-                    <button onClick={() => window.location.href = '/citizen/message'}
+                    <button onClick={messageRoute}
                         class="flex flex-row text-center space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold rounded-tr-lg rounded-bl-lg  hover:bg-green-800 md:w-auto md:inline md:mt-0 md:ml-4 bg-green-500 hover:bg-green-200 focus:bg-green-800 focus:outline-none focus:shadow-outline">
                         Messages
 
@@ -125,7 +146,7 @@ export default function profile({data}){
                     <div class="grid grid-cols-1">
                         <div class="text-center my-2">
                             <img class="h-60 w-60  rounded-tr-2xl rounded-bl-2xl mx-auto"
-                                src="https://cdn.australianageingagenda.com.au/wp-content/uploads/2015/06/28085920/Phil-Beckett-2-e1435107243361.jpg"
+                                src={'http://localhost:3000/citizen/getimage/1683311830385182234787_2961222650792073_4188583089565496139_n.jpg'}
                                 alt=""/>
                             
                         </div>
@@ -183,9 +204,13 @@ export default function profile({data}){
                             </svg>
                         </span>
                         <span class="tracking-wide">About</span>
+                        <button onClick={bioRoute}
+                        class="flex flex-row text-center ml-auto space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold rounded-tr-lg rounded-bl-lg  hover:bg-green-800 md:w-auto md:inline md:mt-0 md:ml-4 bg-green-200 hover:bg-green-200 focus:bg-green-800 focus:outline-none focus:shadow-outline">
+                        Edit Bio
+                    </button>
                     </div>
                     <div class="text-gray-700">
-                        <div class="grid md:grid-cols-2 text-sm">
+                        <div class="grid md:grid-cols-2 text-sm-b">
                             <div class="grid grid-cols-2">
                                 <div class="px-4 py-2 font-semibold"> Name</div>
                                 <div class="px-4 py-2">{name}</div>
@@ -229,9 +254,7 @@ export default function profile({data}){
                             </div>
                         </div>
                     </div>
-                    <button
-                        class="block w-full text-blue-800 text-sm font-semibold rounded-lg hover:bg-gray-100 focus:outline-none focus:shadow-outline focus:bg-gray-100 hover:shadow-xs p-3 my-4">
-                       Edit Bio</button>
+                    
                 </div>
                 
 

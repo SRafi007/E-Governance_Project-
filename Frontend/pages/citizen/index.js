@@ -6,6 +6,8 @@ import Slider2 from '../citizen/components/CustomSlider'
 import Slider from '../citizen/components/HomeSlider'
 import { useState,useEffect } from 'react'
 import SessionCheck from './components/sessionCheck'
+import Footer from './components/Footer'
+import BlogCard from './components/BlogCard'
 
 
 
@@ -25,6 +27,7 @@ export default function Home() {
 
   return (
     <>
+    <div className="bg-gray-300">
       <Head>
         <title>citizen Page</title>
       </Head>
@@ -32,14 +35,13 @@ export default function Home() {
       <Navbar/>
       
       <Slider/>
-      <div class="inline-flex flex-row w-full">
-  <div class="bg-teal-400 p-4 m-2">1</div>
-  <div class="bg-teal-400 p-4 m-2"> 2</div>
-  <div class="bg-teal-400 p-4 m-2">3</div>
-  </div>
+      
   <Slider2/>
+  <BlogCard/>
+
   
-  
+  <Footer/>
+  </div>
     
     </>
   )
