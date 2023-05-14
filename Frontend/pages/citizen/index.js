@@ -11,6 +11,7 @@ import BlogCard from './components/BlogCard'
 
 
 
+
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -23,6 +24,11 @@ export default function Home() {
   // if (typeof window !== 'undefined') {
   //   setName(sessionStorage.getItem('email'));
   // }
+  const images = [
+    '/image/citizen/banner2.png',
+    '/image/citizen/banner1.png',
+    'https://www.daily-sun.com/assets/news_images/2016/07/07/Community-Health.jpg',
+  ];
   
 
   return (
@@ -36,7 +42,8 @@ export default function Home() {
       
       <Slider/>
       
-  <Slider2/>
+  <Slider2  images={images}/>
+  
   <BlogCard/>
 
   

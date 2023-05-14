@@ -9,6 +9,10 @@ import SessionCheck from "./components/sessionCheck";
 export default function profile({data}){
     const [id, setId]=useState("");
 
+    useEffect(()=>{
+        setId(sessionStorage.getItem('id'));
+        },[]);
+
   
     
     if(data[0].bio==null){
@@ -61,6 +65,12 @@ export default function profile({data}){
         router.push({
           pathname: '/citizen/message',
           query:{add:'citizen2@gmail.com'}
+        });
+      };
+      const  editProfileRoute=()=>{
+        router.push({
+          pathname: '/citizen/editProfile',
+          query:{photo:data[0].bio.photoName}
         });
       };
 
@@ -132,7 +142,7 @@ export default function profile({data}){
         <div class="md:flex no-wrap md:-mx-2 ">
            
             <div class="w-full md:w-3/12 md:mx-2">
-            <div class="bg-white p-3 hover:shadow">
+            <div class="bg-white  p-3 hover:shadow">
                     <div class="flex items-center space-x-3 font-semibold text-gray-900 text-xl leading-8">
                         <span class="text-green-500">
                             <svg class="h-5 fill-current" xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -146,12 +156,17 @@ export default function profile({data}){
                     <div class="grid grid-cols-1">
                         <div class="text-center my-2">
                             <img class="h-60 w-60  rounded-tr-2xl rounded-bl-2xl mx-auto"
-                                src={'http://localhost:3000/citizen/getimage/1683311830385182234787_2961222650792073_4188583089565496139_n.jpg'}
+                                src={'http://localhost:3000/citizen/getimage/'+data[0].bio.photoName}
                                 alt=""/>
                             
                         </div>
                         
                     </div>
+                    <button onClick={editProfileRoute}
+                        class="flex flex-row text-center  space-x-2 w-full px-4 py-2 mt-2 text-sm font-semibold rounded-tr-lg rounded-bl-lg  hover:bg-green-800 md:w-auto md:inline md:mt-0 md:ml-4 bg-green-100 hover:bg-green-200 focus:bg-green-800 focus:outline-none focus:shadow-outline">
+                        Edit Profile
+
+                    </button>
                 </div>
 
 
@@ -335,6 +350,7 @@ export async  function getServerSideProps({query}){
     console.log(inputValue);
     try{
     const res = await axios.get('http://localhost:3000/citizen/profile/'+inputValue)
+    
     const data=await res.data;
     console.log(data)
     return {props:{data}}
