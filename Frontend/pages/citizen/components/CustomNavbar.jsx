@@ -32,6 +32,7 @@ export default function Example() {
     { name: 'Services', href: '/citizen/services', current: false },
     { name: 'Feedback', href: '/citizen/feedback', current: false },
     { name: 'About Us ', href: '/citizen/aboutus', current: false },
+    { name: 'Community ', href: '/citizen/Communitypost', current: false },
   ]
   const handleSignOut = async (event) => {
     event.preventDefault();

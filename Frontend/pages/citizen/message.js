@@ -10,9 +10,15 @@ export default function message({data}){
     const [showPopup, setShowPopup] = useState(false);
     const [replyMessage, setReplyMessage] = useState('');
     const [email,setEmail]=useState("");
+    const [myid, setId]=useState("");
+   
+    useEffect(()=>{
+    setId(sessionStorage.getItem('id'));
+    },[]);
     useEffect(()=>{
         setEmail(sessionStorage.getItem('email'))
     },[]);
+    
 
     const toggleDarkMode = () => {
       setDarkMode(!darkMode);
@@ -33,16 +39,42 @@ export default function message({data}){
         setShowPopup(true);
     };
 
-    const handleReplySubmit = (e) => {
-        e.preventDefault();
+    const handleReplySubmit = async(receiverMail) => {
+ 
         // Logic for handling the reply message
-        console.log(replyMessage);
-        setShowPopup(false);
-        setReplyMessage('');
+        const info={
+   
+          senderMail:email,
+          message:replyMessage,
+          receiverMail:receiverMail,
+          citizenId:myid
+          }
+          
+        try {
+          const response = await axios.post('http://localhost:3000/citizen/mail', info)
+          const data=await response.data;
+          console.log(data);
+          setReplyMessage('');
+          router.push({
+            pathname:'/citizen/message/',
+          query:{add:email}
+        })
+        }
+        catch (error) {
+            console.log("error22: "+error.message)
+          
+            
+        }
+
     };
-    const handleClosePopup = () => {
-        setShowPopup(false);
-        setReplyMessage('');
+    const ClosePopup = () => {
+      setShowPopup(false);
+      setReplyMessage('');
+      router.push({
+        pathname:'/citizen/message/',
+      query:{add:email}
+    })
+       
       };
     
     return (
@@ -60,9 +92,9 @@ export default function message({data}){
             {data.map(item=>(
                 <>
         {item.senderMail==email?(
-        <div className="bg-teal-200 shadow-lg rounded-lg p-6 mx-2 my-4 hover:shadow-xl cursor-pointer" onClick={handleCardClick}>
+        <div className="bg-teal-300 shadow-lg rounded-lg p-6 mx-2 my-4 hover:shadow-xl cursor-pointer" onClick={handleCardClick}>
         <div className="text-lg font-semibold mb-4">{item.receiverMail}</div>
-        <div className="text-gray-600">{item.message}</div>
+        <div className="text-gray-600">sent:{item.message}</div>
         {showPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg">
@@ -78,6 +110,7 @@ export default function message({data}){
                   onChange={(e) => setReplyMessage(e.target.value)}
                 ></textarea>
                 <button
+                  onClick={() =>handleReplySubmit(item.senderMail)}
                   className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none"
                   type="submit"
                 >
@@ -85,7 +118,7 @@ export default function message({data}){
                 </button>
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white py-2 px-4  rounded focus:outline-none ml-auto"
-                  onClick={handleClosePopup}
+                  onClick={ClosePopup}
                 >
                   Close
                 </button>
@@ -95,9 +128,9 @@ export default function message({data}){
         )}
       </div>
       ):(
-        <div className="bg-green-200 shadow-lg rounded-lg p-6 mx-2 my-4 hover:shadow-xl cursor-pointer" onClick={handleCardClick}>
+        <div className="bg-green-300 shadow-lg rounded-lg p-6 mx-2 my-4 hover:shadow-xl cursor-pointer" onClick={handleCardClick}>
         <div className="text-lg font-semibold mb-4">{item.senderMail}</div>
-        <div className="text-gray-600">{item.message}</div>
+        <div className="text-gray-600">received:{item.message}</div>
         {showPopup && (
           <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div className="bg-white p-6 rounded-lg">
@@ -113,6 +146,7 @@ export default function message({data}){
                   onChange={(e) => setReplyMessage(e.target.value)}
                 ></textarea>
                 <button
+                onClick={() =>handleReplySubmit(item.receiverMail)}
                   className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded focus:outline-none"
                   type="submit"
                 >
@@ -120,7 +154,7 @@ export default function message({data}){
                 </button>
                 <button
                   className="bg-red-500 hover:bg-red-600 text-white py-2 px-4  rounded focus:outline-none ml-auto"
-                  onClick={handleClosePopup}
+                  onClick={ClosePopup}
                 >
                   Close
                 </button>
@@ -141,13 +175,33 @@ export default function message({data}){
 }
  
 export async function getServerSideProps({query}){
+  
     const info=query.add;
-    const res=await axios.get('http://localhost:3000/citizen/mailbox?add='+info)
+    try{
+    const res=await axios.get('http://localhost:3000/citizen/mailbox/'+info)
     let data=res.data;
     if (data==0){
-        data={};
-        return{props:{data}}
-    }
+      data=[{
+   
+        senderMail:"citizen2@gmail.com",
+        message:"Demo Mail for 3",
+        receiverMail:"citizen3@gmail.com",
+        citizenId:2
+        }]
+      return{props:{data}}
+    }else{
     console.log(data)
     return{props:{data}}
+    }
+  }
+  catch(err){
+    data=[{
+   
+      senderMail:"citizen2@gmail.com",
+      message:"Demo Mail for 3",
+      receiverMail:"citizen3@gmail.com",
+      citizenId:2
+      }]
+    return{props:{data}}
+  }
 }

@@ -1,7 +1,10 @@
 import React from 'react';
 import { useRouter } from "next/router";
+import { useEffect,useState } from 'react';
+import axios from 'axios';
 
 const BlogsCard = ({ doctorName, blogTitle, blogContent, redirectTo }) => {
+  
   const handleClick = () => {
     window.location.href = redirectTo;
   };
@@ -40,6 +43,19 @@ const DoctorCard = ({ doctorName, blogTitle, blogContent, redirectTo }) => {
 };
 
 const DoctorCardList = () => {
+  // const [data, setData]=useState([]);
+  // useEffect(async()=>{
+  //   try{
+  //     const response = await axios.get('https://egovernanceprojectwithnestjs-production.up.railway.app/doctor/allblogs');
+  //       const data = await response.data;
+  //       setData(data);
+  //       console.log(data);
+  //   }
+  //   catch(error){
+
+  //   }
+  // },[])
+  
   return (
     <div className="flex flex-wrap justify-center gap-6">
       <DoctorCard
@@ -71,6 +87,8 @@ const DoctorCardList = () => {
 };
 
 const BlogCard = () => {
+  
+
   const router= useRouter();
   const handleViewAllClick = () => {
      router.push('citizen/blogs')
@@ -84,9 +102,18 @@ const BlogCard = () => {
           View All Blogs
         </button>
       </div>
-      <DoctorCardList />
+      <DoctorCardList  />
     </div>
   );
 };
 
 export default BlogCard;
+    
+   export async function getServerSideProps() {
+   
+        const response = await axios.get('https://egovernanceprojectwithnestjs-production.up.railway.app/doctor/allblogs');
+        const data = await response.data;
+        console.log(data);
+      
+    return { props: { data } }
+    }

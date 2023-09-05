@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 
 function EditProfilePage({data}) {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [phoneNumber, setPhone] = useState('');
+  const [name, setName] = useState(data.name);
+  const [email, setEmail] = useState(data.email);
+  const [phoneNumber, setPhone] = useState(data.phoneNumber);
   const [success, setSuccess] = useState(false);
   const router =useRouter();
   const [myid, setId]=useState("");
@@ -57,7 +57,7 @@ function EditProfilePage({data}) {
       <div className="mb-8">
         <img
           className="w-32 h-32 rounded-full"
-          src={'http://localhost:3000/citizen/getimage/'+data}
+          src={'http://localhost:3000/citizen/getimage/'+data.photoName}
           alt="Profile Picture"
         />
       </div>
@@ -65,21 +65,21 @@ function EditProfilePage({data}) {
         <input
           className="w-full mb-4 px-4 py-2 rounded"
           type="text"
-          placeholder="Name"
+          placeholder={data.name}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
         <input
           className="w-full mb-4 px-4 py-2 rounded"
           type="email"
-          placeholder="Email"
+          placeholder={data.email}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
         <input
           className="w-full mb-4 px-4 py-2 rounded"
           type="text"
-          placeholder="phoneNumber"
+          placeholder={data.phoneNumber}
           value={phoneNumber}
           onChange={(e) => setPhone(e.target.value)}
         />
@@ -107,9 +107,22 @@ function EditProfilePage({data}) {
 export default EditProfilePage;
 
 export async  function getServerSideProps({query}){
-    const data=query.photo;
-    console.log(data)
-    return {props:{data}}
+    const pic=query.photo;
+    const id=query.id;
+    console.log(pic)
+    try{
+        const response = await axios.get('http://localhost:3000/citizen/profile/'+id);
+        const profile = await response.data;
+        const data={photoName:pic,name:profile[0].name,email:profile[0].email,phoneNumber:profile[0].phoneNumber}
+        console.log(data);
+        return {props:{data}}
+
+    }
+    catch(err){
+        const data={photoName:'user_icon.jpg',name:'error',email:'error',phoneNumber:'error'}
+        return {props:{data}}
+    }
+    
 
  
 }
